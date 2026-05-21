@@ -1,6 +1,7 @@
 package com.pedroneto.workshopmongo.resources;
 
 import com.pedroneto.workshopmongo.domain.User;
+import com.pedroneto.workshopmongo.dto.UserDTO;
 import com.pedroneto.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,15 @@ public class UserResource {
     @Autowired
     private UserService service;
 
-
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<User>> findAll() {
+    public ResponseEntity<List<UserDTO>> findAll() {
         List<User> list = service.findAll();
 
-        System.out.println("Essa lista: " + list);
-        return ResponseEntity.ok().body(list);
+        List<UserDTO> listDTO = list.stream()
+                .map(UserDTO::new)
+                .toList();
+
+        return ResponseEntity.ok().body(listDTO);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.pedroneto.workshopmongo.resources;
 
+import com.pedroneto.workshopmongo.domain.Post;
 import com.pedroneto.workshopmongo.domain.User;
 import com.pedroneto.workshopmongo.dto.UserDTO;
 import com.pedroneto.workshopmongo.services.UserService;
@@ -30,7 +31,7 @@ public class UserResource {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<UserDTO> findAll(@PathVariable String id) {
+    public ResponseEntity<UserDTO> findById(@PathVariable String id) {
 
         User obj = service.findById(id);
         return ResponseEntity.ok().body(new UserDTO(obj));
@@ -59,5 +60,12 @@ public class UserResource {
         obj = service.update(obj);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+        User obj = service.findById(id);
+
+        return ResponseEntity.ok().body(obj.getPosts());
     }
 }
